@@ -4,16 +4,15 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="grow">
-      <div className="container mx-auto">
-        <section>
-          <h1>Receitas Deliciosas</h1>
-          <p>Descubra receitas simples e saborosas para todas as ocasiões</p>
-
-          <Link href="/receitas">
-          Ver todas as receitas
-          </Link>
+        <section className="flex flex-col bg-orange-50 gap-6 py-12 items-center">
+          <div className="flex flex-col items-center gap-4 container mx-auto text-black">
+            <h1 className="text-5xl">Receitas Deliciosas</h1>
+            <p className="text=xl">Descubra receitas simples e saborosas para todas as ocasiões</p>
+            <Link href="/receitas" className="bg-orange-500 text-white font-bold rounded-xl px-2 py-2">
+            Ver todas as receitas
+            </Link>
+          </div>
         </section>
-      </div>
     </main>
   );
 }
