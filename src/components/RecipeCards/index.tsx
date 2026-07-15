@@ -10,7 +10,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps){
     return (
     <Link href={`/receitas/${recipe.id}`}>
         <div className="border-slate-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
-            <div className="relative h-48 w-full">
+            <div className="relative h-64 w-full">
             <Image 
                 src={recipe.image}
                 alt="Titulo da receita"
