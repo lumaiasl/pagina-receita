@@ -8,7 +8,7 @@ export default function ReceitasPage(){
                 <h1 className="texst-3xl font-bold">Todas as receitas</h1>
                 <div className="mt-8 grid grid-cols-3 gap-8">
                     {recipes.map((recipe) => 
-                        <RecipeCard />
+                        <RecipeCard key={recipe.id} recipe={recipe} />
                     )}
                 </div>
             </div>
