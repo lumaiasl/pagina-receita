@@ -3,6 +3,7 @@ import Image from "next/image"
 import { ChevronLeft } from "lucide-react"
 import { notFound } from "next/navigation"
 import { recipes } from "@/lib/data"
+import InfoPill from "@/components/InfoPill"
 
 interface RecipePageProps {
     params: Promise<{
@@ -44,7 +45,11 @@ export default async function ReceitaPage({ params }: RecipePageProps){
                                 <p>{recipe.description}</p>
                             </div>
 
-                            <div className="flex">
+                            <div className="flex gap-4">
+                                <InfoPill title="Preparo" info={recipe.prepTime} />
+                                <InfoPill title="Cozimento" info={recipe.cookTime} />
+                                <InfoPill title="Porções" info={recipe.servings} />
+                                <InfoPill title="Categoria" info={recipe.category} />
 
                             </div>
 
