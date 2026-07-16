@@ -18,7 +18,7 @@ export default function Home() {
           </div>
         </section>
         <section className="py-12 text-black bg-white">
-          <div className="container mx-auto flex flex-col items-center">
+          <div className="container mx-auto flex flex-col items-center gap-6">
             <h2 className="text-lg font-bold">Receitas em Destaque</h2>
             <div>
               <div className="flex w-ful gap-8">
@@ -26,7 +26,7 @@ export default function Home() {
                   <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
               </div>
-              <Link className="flex text-orange-400 hover:text-orange-700 transition-colors" href="">
+              <Link className="flex text-orange-400 hover:text-orange-700 transition-colors mt-6" href="">
               Ver todas as receitas<ChevronRight />
               </Link>
             </div>
