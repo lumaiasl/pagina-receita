@@ -13,7 +13,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps){
             <div className="relative h-64 w-full">
             <Image 
                 src={recipe.image}
-                alt="Titulo da receita"
+                alt={recipe.title}
                 fill
             />
             </div>

@@ -1,44 +1,60 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ChevronLeft } from "lucide-react"
+import { notFound } from "next/navigation"
+import { recipes } from "@/lib/data"
 
-export default function ReceitaPage(){
+interface RecipePageProps {
+    params: Promise<{
+        id: string;
+    }>
+}
+export default async function ReceitaPage({ params }: RecipePageProps){
+    const resolvedParams = await params;
+    const recipe = recipes.find((recipe) => recipe.id === resolvedParams.id)
+
+    if(!recipe) {
+        return notFound()
+    }
+
     return(
         <main className="grow py-8">
             <div className="container mx-auto">
-                <Link className="flex items-center text-orange-400 hover:text-orange-700" href="/receitas">
+                <Link className="flex text-orange-400 hover:text-orange-700" href="/receitas">
                 <ChevronLeft />
                 Voltar para receitas
                 </Link>
 
-                <section>
+                <section className="text-black">
                     <div className="relative h-96 w-full">
                         <Image
-                            src=""
-                            alt="Título da receitaa"
+                            src={recipe.image}
+                            alt={recipe.title}
+                            fill
                         >
 
                         </Image>
+                    </div>
 
-                        <div>
-                            <h1>Título da receita</h1>
-                            <p>Descrição</p>
+                     <div className="container mx-auto">
+                            <h1>{recipe.title}</h1>
+                            <p>{recipe.description}</p>
                             <div className="flex">
-                                /* TODO: componentes de info */
+
                             </div>
 
-                            /* Colunas */
                             <div>
+                                
+                                <ul>
+                                    {recipe.ingredients.map((ingredient, index) => (<li key={index}>{ingredient}</li>
+                                ))}
+                                </ul>
 
-                                <div>
-
-                                </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </section>
             </div>
         </main>
