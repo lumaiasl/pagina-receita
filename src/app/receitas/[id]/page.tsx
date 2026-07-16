@@ -20,38 +20,48 @@ export default async function ReceitaPage({ params }: RecipePageProps){
     return(
         <main className="grow py-8">
             <div className="container mx-auto">
-                <Link className="flex text-orange-400 hover:text-orange-700" href="/receitas">
+                <Link className="flex text-orange-400 hover:text-orange-700 mb-6" href="/receitas">
                 <ChevronLeft />
                 Voltar para receitas
                 </Link>
 
-                <section className="text-black">
+                <section className="rounded-lg overflow-hidden shadow-md">
                     <div className="relative h-96 w-full">
                         <Image
                             src={recipe.image}
                             alt={recipe.title}
                             fill
+                            className="object-cover"
                         >
 
                         </Image>
                     </div>
 
-                     <div className="container mx-auto">
-                            <h1>{recipe.title}</h1>
-                            <p>{recipe.description}</p>
+                     <div className="flex flex-col gap-6 p-6">
+
+                            <div>
+                                <h1 className="text-3xl font-bold">{recipe.title}</h1>
+                                <p>{recipe.description}</p>
+                            </div>
+
                             <div className="flex">
 
                             </div>
 
-                            <div>
+                            <div className="grid grid-cols-2">
                                 
-                                <ul>
-                                    {recipe.ingredients.map((ingredient, index) => (<li key={index}>{ingredient}</li>
-                                ))}
-                                </ul>
+                                <div>
+                                    <h2 className="text-xl font-bold mb-4">Ingredientes</h2>
+                                    <ul className="list-disc list-inside space-y-2">
+                                        {recipe.ingredients.map((ingredient, index) => (<li className="marker:text-orange-500" key={index}>{ingredient}</li>
+                                    ))}
+                                    </ul>
+                                </div>
 
                                 <div>
-
+                                    <h2 className="text-xl font-bold mb-4">Modo de preparo</h2>
+                                    <div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
