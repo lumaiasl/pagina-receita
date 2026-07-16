@@ -4,6 +4,7 @@ import { ChevronLeft } from "lucide-react"
 import { notFound } from "next/navigation"
 import { recipes } from "@/lib/data"
 import InfoPill from "@/components/InfoPill"
+import PrepSteps from "@/components/PrepSteps"
 
 interface RecipePageProps {
     params: Promise<{
@@ -65,8 +66,11 @@ export default async function ReceitaPage({ params }: RecipePageProps){
 
                                 <div>
                                     <h2 className="text-xl font-bold mb-4">Modo de preparo</h2>
-                                    <div>
-                                    </div>
+                                    <ul className="space-y-4">
+                                        {recipe.instructions.map((instruction, index) => (
+                                            <PrepSteps index={index} description={instruction} key={instruction}/>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
