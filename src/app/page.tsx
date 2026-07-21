@@ -2,11 +2,66 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
-import { Recipe, recipes } from "@/lib/data";
+import { Recipe, recipes as initialRecipes } from "@/lib/data";
 import RecipeCard from "@/components/RecipeCards";
+import RecipeFormModal from "@/components/RecipeFormModal";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 
 export default function Home() {
+  const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
+  const [recipes, setRecipes] = useState<Recipe[]>(initialRecipes);
+  const [modalMode, setModalMode] = useState<"create" | "edit">("create");
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>(
+    undefined,
+  );
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+    useState(false);
+
+  const handleOpenCreateModal = () => {
+    setSelectedRecipe(undefined);
+    setModalMode("create");
+    setIsRecipeModalOpen(true);
+  };
+
+  const handleOpenEditModal = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setModalMode("edit");
+    setIsRecipeModalOpen(true);
+  };
+
+  const handleCloseModal = () => setIsRecipeModalOpen(false);
+
+  const handleSaveRecipe = (recipeData: Recipe | Omit<Recipe, "id">) => {
+    if (modalMode === "create") {
+      const newRecipe: Recipe = {
+        ...recipeData,
+        id: (recipes.length + 1).toString(),
+      };
+      setRecipes((prev) => [...prev, newRecipe]);
+    } else {
+      // modo "edit"
+      const updatedRecipe = recipeData as Recipe;
+      setRecipes((prev) =>
+        prev.map((recipe) =>
+          recipe.id === updatedRecipe.id ? updatedRecipe : recipe,
+        ),
+      );
+    }
+    handleCloseModal();
+  };
+
+  const handleDeleteRecipe = () => {
+    if (selectedRecipe) {
+      setRecipes((prev) =>
+        prev.filter((recipe) => recipe.id !== selectedRecipe.id),
+      );
+
+      setIsDeleteConfirmationModalOpen(false);
+      setSelectedRecipe(undefined);
+    }
+  };
   const featureRecipes = recipes.slice(0, 3);
 
   return (
@@ -14,7 +69,7 @@ export default function Home() {
       <section className="flex flex-col bg-orange-50 gap-6 py-8 items-center">
         <div className="flex flex-col items-center gap-4 container mx-auto text-black">
           <h1 className="text-5xl">Receitas Deliciosas</h1>
-          <p className="text=xl">
+          <p className="text-xl">
             Descubra receitas simples e saborosas para todas as ocasiões
           </p>
           <Link
@@ -29,13 +84,16 @@ export default function Home() {
         <div className="container mx-auto flex flex-col items-center gap-6">
           <h2 className="text-lg font-bold">Receitas em Destaque</h2>
           <div>
-            <div className="flex w-ful gap-8">
+            <div className="flex w-full gap-8">
               {featureRecipes.map((recipe) => (
                 <RecipeCard
                   key={recipe.id}
                   recipe={recipe}
-                  onEdit={() => ""}
-                  onDelete={() => ""}
+                  onEdit={() => handleOpenEditModal(recipe)}
+                  onDelete={() => {
+                    setSelectedRecipe(recipe);
+                    setIsDeleteConfirmationModalOpen(true);
+                  }}
                 />
               ))}
             </div>
@@ -49,6 +107,21 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <RecipeFormModal
+        isOpen={isRecipeModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveRecipe}
+        mode={modalMode}
+        recipe={selectedRecipe}
+      />
+
+      <DeleteConfirmationModal
+        isOpen={isDeleteConfirmationModalOpen}
+        onClose={() => setIsDeleteConfirmationModalOpen(false)}
+        onConfirm={handleDeleteRecipe}
+        recipe={selectedRecipe}
+      />
     </main>
   );
 }
