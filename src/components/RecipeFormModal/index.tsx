@@ -14,6 +14,7 @@ import {
 import { useFieldArray, useForm } from "react-hook-form";
 import { Recipe } from "@/lib/data";
 import { Bold } from "lucide-react";
+import { X } from "lucide-react";
 
 interface RecipeFormModalProps {
   isOpen: boolean;
@@ -101,11 +102,11 @@ export default function RecipeFormModal({
     onClose();
   };
 
-  const inputStyle = "p-2 border border-zinc-200 rounded-md";
+  const inputStyle = "p-2 border border-zinc-200 rounded-md w-full";
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white min-w-2xl max-h-[90dvh] overflow-y-scroll">
+      <DialogContent className="bg-white md:min-w-2xl max-h-[90dvh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle className="font-bold text-lg">
             {mode === "create" ? "Nova receita" : "Editar receita"}
@@ -116,7 +117,7 @@ export default function RecipeFormModal({
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 w-full"
         >
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-2">
             {/* Título */}
             <div className="flex flex-col gap-1">
               <label htmlFor="title">Título</label>
@@ -182,7 +183,7 @@ export default function RecipeFormModal({
             ) : null}
           </div>
 
-          <div className="grid grid-cols-3 gap-1">
+          <div className="flex flex-col md:grid md:grid-cols-3 gap-1">
             {/* Tempo de preparo */}
             <div className="flex flex-col gap-1">
               <label htmlFor="prepTime">Tempo de preparo</label>
@@ -261,7 +262,7 @@ export default function RecipeFormModal({
                       className="bg-white border border-zinc-300 rounded-md font-semibold hover:bg-gray-200 transition-colors px-4 py-2"
                       onClick={() => removeIngredients(index)}
                     >
-                      Remover
+                      <X size={16} />
                     </button>
                   )}
                 </div>
@@ -282,7 +283,7 @@ export default function RecipeFormModal({
             <label htmlFor="instructions">Instruções</label>
             <div className="flex flex-col gap-1">
               {instructionsFields.map((field, index) => (
-                <div key={field.id} className="flex w-full gap-2">
+                <div key={field.id} className="flex w-full gap-2 items-center">
                   <div className="flex flex-col gap-1 grow">
                     <textarea
                       id="instructions"
@@ -302,7 +303,7 @@ export default function RecipeFormModal({
                       className="bg-white border border-zinc-300 rounded-md font-semibold hover:bg-gray-200 transition-colors px-4 py-2 h-fit"
                       onClick={() => removeInstructions(index)}
                     >
-                      Remover
+                      <X size={16} />
                     </button>
                   )}
                 </div>

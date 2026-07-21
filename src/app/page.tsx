@@ -66,10 +66,11 @@ export default function Home() {
 
   return (
     <main className="grow">
+      {/* Título */}
       <section className="flex flex-col bg-orange-50 gap-6 py-8 items-center">
         <div className="flex flex-col items-center gap-4 container mx-auto text-black">
-          <h1 className="text-5xl">Receitas Deliciosas</h1>
-          <p className="text-xl">
+          <h1 className="text-5xl text-center">Receitas Deliciosas</h1>
+          <p className="text-xl text-center px-2">
             Descubra receitas simples e saborosas para todas as ocasiões
           </p>
           <Link
@@ -80,11 +81,13 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Cards */}
       <section className="py-12 text-black bg-white">
         <div className="container mx-auto flex flex-col items-center gap-6">
           <h2 className="text-lg font-bold">Receitas em Destaque</h2>
           <div>
-            <div className="flex w-full gap-8">
+            <div className="flex flex-col gap-2 px-6 w-full lg:flex-row lg:gap-8">
               {featureRecipes.map((recipe) => (
                 <RecipeCard
                   key={recipe.id}
@@ -98,7 +101,7 @@ export default function Home() {
               ))}
             </div>
             <Link
-              className="flex text-orange-400 hover:text-orange-700 transition-colors mt-6"
+              className="flex justify-center md:justify-start px-6 text-orange-400 hover:text-orange-700 transition-colors mt-6"
               href="/receitas"
             >
               Ver todas as receitas

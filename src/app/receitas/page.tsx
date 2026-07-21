@@ -70,28 +70,37 @@ export default function ReceitasPage() {
   };
 
   return (
-    <main className="grow py-8 bg-white text-black">
+    <main className="grow py-8 px-4 bg-white text-black">
       <div className="container mx-auto">
-        <div className="flex justify-between items-center w-full">
-          <h1 className="texst-3xl font-bold">Todas as receitas</h1>
+        <div className="flex justify-center md:justify-between items-center w-full">
+          <h1 className="text-center text-xl font-bold">Todas as receitas</h1>
 
           <button
             onClick={handleOpenCreateModal}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg bg-black text-white border-white hover:bg-white hover:text-black hover:border-black cursor-pointer transition-colors"
+            className="hidden md:flex items-center gap-2 px-4 py-2 border rounded-lg bg-black text-white border-white hover:bg-white hover:text-black hover:border-black cursor-pointer transition-colors"
           >
             <Plus size={16} />
             Nova receita
           </button>
         </div>
-        <div className="mt-8 grid grid-cols-3 gap-8">
-          {recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              onEdit={() => handleOpenEditModal(recipe)}
-              onDelete={() => handleOpenDeleteConfirmationModal(recipe)}
-            />
-          ))}
+        <div className="flex flex-col items-center gap-12">
+          <div className="flex flex-col mt-8 md:grid md:grid-cols-3 gap-8">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                onEdit={() => handleOpenEditModal(recipe)}
+                onDelete={() => handleOpenDeleteConfirmationModal(recipe)}
+              />
+            ))}
+          </div>
+          <button
+            onClick={handleOpenCreateModal}
+            className="flex md:hidden items-center gap-2 px-4 py-2 border rounded-lg bg-black text-white border-white hover:bg-white hover:text-black hover:border-black cursor-pointer transition-colors"
+          >
+            <Plus size={16} />
+            Nova receita
+          </button>
         </div>
       </div>
 
