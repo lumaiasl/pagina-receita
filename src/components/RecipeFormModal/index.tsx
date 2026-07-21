@@ -1,4 +1,7 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Dialog, DialogTitle, DialogHeader, DialogContent, DialogDescription } from "../ui/dialog";
+import { RecipeFormData, recipeSchema } from "@/lib/FormValidadionScheme/recipeSchema";
+import { useForm } from "react-hook-form";
 
 interface RecipeFormModalProps {
     isOpen: boolean;
@@ -6,6 +9,22 @@ interface RecipeFormModalProps {
 }
 
 export default function RecipeFormModal({ isOpen, onClose }: RecipeFormModalProps) {
+    const {
+        register,
+        reset,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<RecipeFormData>({
+        resolver: yupResolver(recipeSchema),
+        mode: "onSubmit"
+    })
+
+    const onSubmit = (data: RecipeFormData) => {
+        console.log(data)
+        reset()
+        onClose()
+    }
+    
     const inputStyle = "p-2 border border-zinc-200 rounded-md"
     
     return (
@@ -16,51 +35,62 @@ export default function RecipeFormModal({ isOpen, onClose }: RecipeFormModalProp
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
 
-                <form className="flex flex-col gap-4 w-full">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
                     <div className="grid grid-cols-2 gap-2">
 
                         {/* Título */}
                         <div className="flex flex-col gap-1">
                             <label htmlFor="title">Título</label>
-                            <input className={inputStyle} type="text" id="title" />
+                            <input className={inputStyle} type="text" id="title" {...register("title")} />
+                            {errors.title ? <span className="text-red-500 text-sm">{errors.title.message}</span> : null}
                         </div>
 
                         {/* Categoria */}
                         <div className="flex flex-col gap-1">
                             <label htmlFor="category">Categoria</label>
-                            <input className={inputStyle} type="text" id="category" />
+                            <input className={inputStyle} type="text" id="category" {...register("category")} />
+                            {errors.category ? <span className="text-red-500 text-sm">{errors.category.message}</span> : null}
                         </div>
                     </div>
  
                     {/* Descrição */}
                     <div className="flex flex-col gap-1">
                         <label htmlFor="description">Descrição</label>
-                        <textarea className={inputStyle} id="description"></textarea>
+                        <textarea className={inputStyle} id="description" {...register("description")}></textarea>
+                            {errors.description ? <span className="text-red-500 text-sm">{errors.description.message}</span> : null}
+
                     </div>
 
                     {/* URL da imagem */}
                     <div className="flex flex-col gap-1">
                         <label htmlFor="imageUrl">URL da imagem</label>
-                        <input type="text" className={inputStyle} id="description" placeholder="/placeholder.svg"></input>
+                        <input type="text" className={inputStyle} id="imageUrl" placeholder="/placeholder.svg" {...register("imageUrl")}></input>
+                            {errors.imageUrl ? <span className="text-red-500 text-sm">{errors.imageUrl.message}</span> : null}
                     </div>
 
                     <div className="grid grid-cols-3 gap-2">
                         {/* Tempo de preparo */}
                         <div className="flex flex-col gap-1">
                             <label htmlFor="prepTime">Tempo de preparo</label>
-                            <input className={inputStyle} type="text" id="prepTime" placeholder="30 minutos" />
+                            <input className={inputStyle} type="text" id="prepTime" placeholder="30 minutos" {...register("prepTime")} />
+                            {errors.prepTime ? <span className="text-red-500 text-sm">{errors.prepTime.message}</span> : null}
+
                         </div>
 
                         {/* tempo de cozimento */}
                         <div className="flex flex-col gap-1">
                             <label htmlFor="cookTime">Tempo de cozimento</label>
-                            <input className={inputStyle} type="text" id="cookTime" placeholder="15 minutos" />
+                            <input className={inputStyle} type="text" id="cookTime" placeholder="15 minutos" {...register("cookTime")} />
+                            {errors.cookTime ? <span className="text-red-500 text-sm">{errors.cookTime.message}</span> : null}
+
                         </div>
 
                         {/* Porções */}
                         <div className="flex flex-col gap-1">
                             <label htmlFor="servings">Porções</label>
-                            <input className={inputStyle} type="text" id="servings" defaultValue={1} />
+                            <input className={inputStyle} type="text" id="servings" defaultValue={1} {...register("servings")} />
+                            {errors.servings ? <span className="text-red-500 text-sm">{errors.servings.message}</span> : null}
+
                         </div>
                     </div>
 
