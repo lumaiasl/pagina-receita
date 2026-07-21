@@ -28,7 +28,7 @@ export const recipeSchema = yup.object().shape({
     .array()
     .of(
       yup.object({
-        value: yup.string().required("A instrução pode ser vazia"),
+        value: yup.string().required("A instrução não pode ser vazia"),
       }),
     )
     .min(1, "Adicione pelo menos 1 instrução")

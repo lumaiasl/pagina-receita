@@ -1,3 +1,4 @@
+import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Dialog,
@@ -64,16 +65,22 @@ export default function RecipeFormModal({
   });
 
   const onSubmit = (data: RecipeFormData) => {
-    console.log(data);
+    const recipeData = {
+      ...data,
+      ingredients: data.ingredients.map((ingredient) => ingredient.value),
+      instructions: data.instructions.map((instruction) => instruction.value),
+    };
+
+    console.log(recipeData);
     reset();
     onClose();
   };
 
-  const inputStyle = "p-2 border border-zinc-200 rounded-md grow";
+  const inputStyle = "p-2 border border-zinc-200 rounded-md";
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white min-w-2xl">
+      <DialogContent className="bg-white min-w-2xl max-h-[90dvh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Nova receita</DialogTitle>
           <DialogDescription></DialogDescription>
@@ -208,13 +215,20 @@ export default function RecipeFormModal({
             <div className="flex flex-col gap-1">
               {ingredientsFields.map((field, index) => (
                 <div key={field.id} className="flex w-full gap-2">
-                  <input
-                    id="ingredients"
-                    type="text"
-                    className={inputStyle}
-                    {...register(`ingredients.${index}.value`)}
-                    placeholder="Digite um ingrediente"
-                  />
+                  <div className="flex flex-col gap-1 grow">
+                    <input
+                      id="ingredients"
+                      type="text"
+                      className={inputStyle}
+                      {...register(`ingredients.${index}.value`)}
+                      placeholder="Digite um ingrediente"
+                    />
+                    {errors.ingredients?.[index]?.value && (
+                      <span className="text-sm text-red-500">
+                        {errors.ingredients?.[index].value.message}
+                      </span>
+                    )}
+                  </div>
                   {ingredientsFields.length > 1 && (
                     <button
                       type="button"
@@ -243,12 +257,19 @@ export default function RecipeFormModal({
             <div className="flex flex-col gap-1">
               {instructionsFields.map((field, index) => (
                 <div key={field.id} className="flex w-full gap-2">
-                  <textarea
-                    id="instructions"
-                    className={inputStyle}
-                    {...register(`instructions.${index}.value`)}
-                    placeholder="Digite uma instrução"
-                  />
+                  <div className="flex flex-col gap-1 grow">
+                    <textarea
+                      id="instructions"
+                      className={inputStyle}
+                      {...register(`instructions.${index}.value`)}
+                      placeholder="Digite uma instrução"
+                    />
+                    {errors.instructions?.[index]?.value && (
+                      <span className="text-sm text-red-500">
+                        {errors.instructions?.[index].value.message}
+                      </span>
+                    )}
+                  </div>
                   {instructionsFields.length > 1 && (
                     <button
                       type="button"
@@ -274,7 +295,10 @@ export default function RecipeFormModal({
           <div className="flex gap-2 self-end">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                reset();
+                onClose();
+              }}
               className="bg-white border border-zinc-300 font-semibold rounded-md hover:bg-gray-200 transition-colors px-4 py-2"
             >
               Cancelar
