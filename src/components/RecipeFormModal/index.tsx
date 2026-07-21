@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Dialog,
@@ -13,11 +13,14 @@ import {
 } from "@/lib/FormValidadionScheme/recipeSchema";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Recipe } from "@/lib/data";
+import { Bold } from "lucide-react";
 
 interface RecipeFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (recipe: Omit<Recipe, "id">) => void;
+  onSave: (recipe: Omit<Recipe, "id"> | Recipe) => void;
+  mode: "create" | "edit";
+  recipe?: Recipe;
 }
 
 const DEFAULT_VALUES: RecipeFormData = {
@@ -36,6 +39,8 @@ export default function RecipeFormModal({
   isOpen,
   onClose,
   onSave,
+  mode,
+  recipe,
 }: RecipeFormModalProps) {
   const {
     register,
@@ -67,6 +72,20 @@ export default function RecipeFormModal({
     name: "instructions",
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      if (mode === "edit" && recipe) {
+        reset({
+          ...recipe,
+          ingredients: recipe.ingredients.map((ing) => ({ value: ing })),
+          instructions: recipe.instructions.map((ing) => ({ value: ing })),
+        });
+      } else {
+        reset(DEFAULT_VALUES);
+      }
+    }
+  }, [mode, isOpen, recipe, reset]);
+
   const onSubmit = (data: RecipeFormData) => {
     const recipeData = {
       ...data,
@@ -75,7 +94,9 @@ export default function RecipeFormModal({
     };
 
     console.log(recipeData);
-    onSave(recipeData);
+    onSave(
+      mode === "edit" && recipe ? { ...recipeData, id: recipe.id } : recipeData,
+    );
     reset();
     onClose();
   };
@@ -86,8 +107,9 @@ export default function RecipeFormModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white min-w-2xl max-h-[90dvh] overflow-y-scroll">
         <DialogHeader>
-          <DialogTitle>Nova receita</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogTitle className="font-bold text-lg">
+            {mode === "create" ? "Nova receita" : "Editar receita"}
+          </DialogTitle>
         </DialogHeader>
 
         <form
@@ -311,7 +333,7 @@ export default function RecipeFormModal({
               type="submit"
               className="bg-black text-white rounded-md hover:bg-gray-900 font-semibold transition-colors px-4 py-2"
             >
-              Criar Receita
+              {mode === "create" ? "Criar receita" : "Editar receita"}
             </button>
           </div>
         </form>
