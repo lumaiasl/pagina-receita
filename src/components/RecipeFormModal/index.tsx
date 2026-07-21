@@ -12,17 +12,19 @@ import {
   recipeSchema,
 } from "@/lib/FormValidadionScheme/recipeSchema";
 import { useFieldArray, useForm } from "react-hook-form";
+import { Recipe } from "@/lib/data";
 
 interface RecipeFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (recipe: Omit<Recipe, "id">) => void;
 }
 
 const DEFAULT_VALUES: RecipeFormData = {
   title: "",
   category: "",
   description: "",
-  imageUrl: "",
+  image: "",
   prepTime: "",
   cookTime: "",
   servings: 1,
@@ -33,6 +35,7 @@ const DEFAULT_VALUES: RecipeFormData = {
 export default function RecipeFormModal({
   isOpen,
   onClose,
+  onSave,
 }: RecipeFormModalProps) {
   const {
     register,
@@ -72,6 +75,7 @@ export default function RecipeFormModal({
     };
 
     console.log(recipeData);
+    onSave(recipeData);
     reset();
     onClose();
   };
@@ -147,11 +151,11 @@ export default function RecipeFormModal({
               className={inputStyle}
               id="imageUrl"
               placeholder="/placeholder.svg"
-              {...register("imageUrl")}
+              {...register("image")}
             ></input>
-            {errors.imageUrl ? (
+            {errors.image ? (
               <span className="text-red-500 text-sm">
-                {errors.imageUrl.message}
+                {errors.image.message}
               </span>
             ) : null}
           </div>
