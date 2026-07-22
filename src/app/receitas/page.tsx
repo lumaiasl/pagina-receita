@@ -73,9 +73,9 @@ export default function ReceitasPage() {
     }
   };
 
-  const filteredRecipes = recipes.filter((recipe) => {
-    recipe.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <main className="grow py-8 px-4 bg-white text-black">
@@ -121,7 +121,9 @@ export default function ReceitasPage() {
                     onDelete={() => handleOpenDeleteConfirmationModal(recipe)}
                   />
                 ))}
-            {filteredRecipes.length === 0 && <p>Nenhum resultado encontrado</p>}
+            {filteredRecipes.length === 0 && searchTerm !== "" ? (
+              <p>Nenhum resultado encontrado</p>
+            ) : null}
           </div>
           <button
             onClick={handleOpenCreateModal}
